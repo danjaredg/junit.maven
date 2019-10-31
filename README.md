@@ -1,6 +1,6 @@
 # JUnit Maven Integration
 
-This plugin integrate Maven Surfire Plugin with Eclipse JUnit. This plugin can
+This plugin integrate Maven Surefire Plugin with Eclipse JUnit. This plugin can
 recognize this tags:
 
 * additionalClasspathElements
