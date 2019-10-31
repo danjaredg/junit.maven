@@ -32,6 +32,11 @@ Example:
 </plugin>
 ```
 
+## Instalation
+
+You use the Update Site: https://dl.bintray.com/danjaredg/junit.maven.integration/
+to install this plugin
+
 ## License
 
 See the [LICENSE](LICENSE.md) file for license rights and limitations (MIT).
