@@ -2,7 +2,7 @@
 <feature
       id="junit.maven.integration.feature"
       label="JUnit Maven Integration"
-      version="1.0.0"
+      version="1.0.1"
       provider-name="org.jarego.software">
 
    <description url="https://github.com/danjaredg">
@@ -29,6 +29,10 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    </license>
+
+   <url>
+      <update label="Junit Maven Integration" url="https://dl.bintray.com/danjaredg/junit.maven.integration/"/>
+   </url>
 
    <requires>
       <import plugin="org.eclipse.core.variables"/>

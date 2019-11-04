@@ -67,7 +67,7 @@ public class JUnitMavenLauncherListener implements ILaunchesListener2 {
 			String parentPomFileName = model.getParent().getRelativePath();
 			if (parentPomFileName == null)
 				parentPomFileName = "../pom.xml";
-			File parentPomFile = new File(parentPomFileName, "pom.xml");
+			File parentPomFile = new File(projectPath, parentPomFileName);
 			Model parentModel = xpp3Reader.read(new FileReader(parentPomFile));
 			models.add(0, parentModel);
 		}
@@ -83,8 +83,13 @@ public class JUnitMavenLauncherListener implements ILaunchesListener2 {
 		}
 		for (Model m : models) {
 			if (m.getBuild() != null) {
-				Plugin plugin = m.getBuild().getPluginsAsMap().get(
-						"org.codehaus.mojo:properties-maven-plugin");
+				Plugin plugin;
+				if ("pom".equals(m.getPackaging()) && m.getBuild().getPluginManagement() != null)
+					plugin = m.getBuild().getPluginManagement().getPluginsAsMap().get(
+							"org.codehaus.mojo:properties-maven-plugin");
+				else
+					plugin = m.getBuild().getPluginsAsMap().get(
+							"org.codehaus.mojo:properties-maven-plugin");
 				if (plugin != null) {
 					List<PluginExecution> executions = plugin.getExecutions();
 					if (executions != null) {
@@ -128,8 +133,13 @@ public class JUnitMavenLauncherListener implements ILaunchesListener2 {
 		List<Xpp3Dom> surefireConfigurations = new ArrayList<>();
 		for (Model m : models) {
 			if (m.getBuild() != null) {
-				Plugin plugin = m.getBuild().getPluginsAsMap().get(
-						"org.apache.maven.plugins:maven-surefire-plugin");
+				Plugin plugin;
+				if ("pom".equals(m.getPackaging()) && m.getBuild().getPluginManagement() != null)
+					plugin = m.getBuild().getPluginManagement().getPluginsAsMap().get(
+							"org.apache.maven.plugins:maven-surefire-plugin");
+				else
+					plugin = m.getBuild().getPluginsAsMap().get(
+							"org.apache.maven.plugins:maven-surefire-plugin");
 				if (plugin != null && plugin.getConfiguration() != null)
 					surefireConfigurations.add((Xpp3Dom)plugin.getConfiguration());
 			}
