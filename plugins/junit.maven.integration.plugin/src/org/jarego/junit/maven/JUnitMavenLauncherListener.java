@@ -15,6 +15,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
@@ -32,6 +36,9 @@ import org.eclipse.debug.core.ILaunchesListener2;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class JUnitMavenLauncherListener implements ILaunchesListener2 {
 	private static final Logger LOG = Logger.getLogger(JUnitMavenLauncherListener.class.getName());
@@ -77,6 +84,38 @@ public class JUnitMavenLauncherListener implements ILaunchesListener2 {
 		mavenProperties.setProperty("basedir", projectPath.getAbsolutePath());
 		mavenProperties.setProperty("project.basedir", projectPath.getAbsolutePath());
 		
+		// variables de repositorio
+		File m2Home;
+		if (System.getenv("M2_HOME") != null) {
+			m2Home = new File(System.getenv("M2_HOME"));
+		} else {
+			m2Home = new File(System.getProperty("user.home"), ".m2");
+		}
+		File settingsFile = new File(m2Home, "settings.xml");
+		File localRepo = null;
+		if (settingsFile.exists()) {
+			try {
+				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+				dbFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+				Document doc = dBuilder.parse(settingsFile);
+				doc.getDocumentElement().normalize();
+				NodeList localRepoNodes = doc.getDocumentElement().getElementsByTagName("localRepository");
+				for (int i=0;i<localRepoNodes.getLength();i++) {
+					Node localRepoNode = localRepoNodes.item(i);
+					if (localRepoNode.getNodeType() == Node.ELEMENT_NODE) {
+						localRepo = new File(mavenProperties.parse(localRepoNode.getNodeValue()));
+					}
+				}
+			} catch (Exception e) {
+				LOG.log(Level.SEVERE, "unable to read setting.xml", e);
+			}
+		}
+		if (localRepo == null)
+			localRepo = new File(m2Home, "repository");
+		mavenProperties.setProperty("settings.localRepository", localRepo.getAbsolutePath());
+		
+		// variables de proyectos
 		for (Model m : models) {
 			if (m.getProperties() != null)
 				mavenProperties.putAllProperties(m.getProperties());

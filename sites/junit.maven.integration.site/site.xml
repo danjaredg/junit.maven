@@ -3,7 +3,7 @@
    <description name="JUnit Maven Integration Site" url="https://dl.bintray.com/danjaredg/junit.maven.integration/">
       This Site has JUnit Maven Integration feature to recognze options from Maven Surefire Plugin
    </description>
-   <feature url="features/junit.maven.integration.feature_1.0.2.jar" id="junit.maven.integration.feature" version="1.0.2">
+   <feature url="features/junit.maven.integration.feature_1.0.3.jar" id="junit.maven.integration.feature" version="1.0.3">
       <category name="Testing"/>
    </feature>
    <category-def name="Testing" label="Testing">

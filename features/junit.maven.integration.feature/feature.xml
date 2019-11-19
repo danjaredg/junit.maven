@@ -2,7 +2,7 @@
 <feature
       id="junit.maven.integration.feature"
       label="JUnit Maven Integration"
-      version="1.0.2"
+      version="1.0.3"
       provider-name="org.jarego.software">
 
    <description url="https://github.com/danjaredg">
