@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="junit.maven.integration.feature"
-      label="JUnit Maven Integration"
+      id="junit.maven.feature"
+      label="JUnit Maven"
       version="1.0.3"
       provider-name="org.jarego.software">
 
@@ -31,7 +31,7 @@ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRES
    </license>
 
    <url>
-      <update label="Junit Maven Integration" url="https://dl.bintray.com/danjaredg/junit.maven.integration/"/>
+      <update label="Junit Maven" url="https://dl.bintray.com/danjaredg/junit.maven/"/>
    </url>
 
    <requires>
@@ -44,13 +44,13 @@ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRES
    </requires>
 
    <plugin
-         id="junit.maven.integration.libraries"
+         id="junit.maven.libraries"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
 
    <plugin
-         id="junit.maven.integration.plugin"
+         id="junit.maven.plugin"
          download-size="0"
          install-size="0"
          version="0.0.0"

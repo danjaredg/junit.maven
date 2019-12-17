@@ -1,11 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JUnit Maven Libraries
-Bundle-SymbolicName: junit.maven.integration.libraries
+Bundle-SymbolicName: junit.maven.libraries
 Bundle-Version: 1.0.0
+Bundle-Vendor: org.jarego.software
+Automatic-Module-Name: junit.maven.libraries
 Bundle-ClassPath: maven-model-3.6.2.jar,
  plexus-utils-3.3.0.jar
-Bundle-Vendor: org.jarego.software
 Export-Package: org.apache.maven.model,
  org.apache.maven.model.io.xpp3,
  org.apache.maven.model.merge,
@@ -19,4 +20,3 @@ Export-Package: org.apache.maven.model,
  org.codehaus.plexus.util.xml,
  org.codehaus.plexus.util.xml.pull
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Automatic-Module-Name: junit.maven.libraries

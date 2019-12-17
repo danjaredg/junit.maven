@@ -1,4 +1,4 @@
-# JUnit Maven Integration
+# JUnit Maven
 
 This plugin integrate Maven Surefire Plugin with Eclipse JUnit. This plugin can
 recognize this tags:
@@ -34,7 +34,7 @@ Example:
 
 ## Instalation
 
-You use the Update Site: https://dl.bintray.com/danjaredg/junit.maven.integration/
+You use the Update Site: https://dl.bintray.com/danjaredg/junit.maven/
 to install this plugin
 
 ## License

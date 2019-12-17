@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="JUnit Maven Site" url="https://dl.bintray.com/danjaredg/junit.maven/">
+      This Site has JUnit Maven feature to recognze options from Maven Surefire Plugin
+   </description>
+   <feature url="features/junit.maven.feature_1.0.3.jar" id="junit.maven.feature" version="1.0.3">
+      <category name="Testing"/>
+   </feature>
+   <category-def name="Testing" label="Testing">
+      <description>
+         Plugins to test projects
+      </description>
+   </category-def>
+</site>

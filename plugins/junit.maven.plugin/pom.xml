@@ -5,11 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.jarego.software</groupId>
-		<artifactId>junit.maven.integration</artifactId>
+		<artifactId>junit.maven</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
-	<artifactId>junit.maven.integration.feature</artifactId>
+	<artifactId>junit.maven.plugin</artifactId>
 	<version>1.0.3</version>
-	<packaging>eclipse-feature</packaging>
+	<packaging>eclipse-plugin</packaging>
 </project>

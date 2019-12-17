@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JUnit Maven Integration
-Bundle-SymbolicName: junit.maven.integration.plugin;singleton:=true
+Bundle-SymbolicName: junit.maven.plugin;singleton:=true
 Bundle-Version: 1.0.3
 Bundle-Vendor: org.jarego.software
-Automatic-Module-Name: junit.maven.integration
+Automatic-Module-Name: junit.maven.plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.variables,
@@ -12,5 +12,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.debug.core,
  org.eclipse.jdt.core,
  org.eclipse.jdt.junit,
- junit.maven.integration.libraries
+ junit.maven.libraries
 Export-Package: org.jarego.junit.maven
