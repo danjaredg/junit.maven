@@ -20,6 +20,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Parent;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
@@ -60,7 +61,7 @@ public class JUnitMavenLauncherListener implements ILaunchesListener2 {
 			throws CoreException, IOException, XmlPullParserException {
 		boolean hasChanges = false;
 		
-		File projectPath = project.getLocation().toFile();
+		File projectPath = project.getLocation().toFile().getCanonicalFile();
 		
 		// leer archivos pom
 		List<Model> models = new ArrayList<>();
@@ -70,19 +71,54 @@ public class JUnitMavenLauncherListener implements ILaunchesListener2 {
 		Model model = xpp3Reader.read(new FileReader(pomFile));
 		models.add(model);
 		
-		if (model.getParent() != null) {
-			String parentPomFileName = model.getParent().getRelativePath();
+		// recuperar el modelodel arbol del proyecto
+		Parent parent = model.getParent();
+		File parentProjectPath = projectPath;
+		while (parent != null) {
+			String parentPomFileName = parent.getRelativePath();
 			if (parentPomFileName == null)
 				parentPomFileName = "../pom.xml";
-			File parentPomFile = new File(projectPath, parentPomFileName);
+			File parentPomFile = new File(parentProjectPath, parentPomFileName);
+			parentProjectPath = parentPomFile.getParentFile().getCanonicalFile();
 			Model parentModel = xpp3Reader.read(new FileReader(parentPomFile));
+			parentModel.setPomFile(parentPomFile.getCanonicalFile());
 			models.add(0, parentModel);
+			parent = parentModel.getParent();
+		}
+		
+		// recuperar el groupId, version y nombre
+		Model lastModel = null;
+		for (Model m : models) {
+			if (lastModel != null) {
+				if (m.getGroupId() == null)
+					m.setGroupId(lastModel.getGroupId());
+				if (m.getVersion() == null)
+					m.setVersion(lastModel.getVersion());
+			}
+			if (m.getName() == null)
+				m.setName(m.getArtifactId());
+			lastModel = m;
 		}
 		
 		// resolver variables
 		MavenProperties mavenProperties = new MavenProperties();
 		mavenProperties.setProperty("basedir", projectPath.getAbsolutePath());
 		mavenProperties.setProperty("project.basedir", projectPath.getAbsolutePath());
+		mavenProperties.setProperty("project.groupId", model.getGroupId());
+		mavenProperties.setProperty("project.artifactId", model.getArtifactId());
+		mavenProperties.setProperty("project.version", model.getVersion());
+		mavenProperties.setProperty("project.name", model.getName());
+		
+		StringBuilder sbParent = new StringBuilder();
+		for (int i=models.size()-2;i>=0;i--) {
+			Model m = models.get(i);
+			String parentsKey = sbParent.append(".parent").toString();
+			mavenProperties.setProperty("project"+parentsKey+".groupId", m.getGroupId());
+			mavenProperties.setProperty("project"+parentsKey+".artifactId", m.getArtifactId());
+			mavenProperties.setProperty("project"+parentsKey+".version", m.getVersion());
+			mavenProperties.setProperty("project"+parentsKey+".name", m.getName());
+			mavenProperties.setProperty("project"+parentsKey+".basedir", m.getProjectDirectory().getCanonicalPath());
+		}
 		
 		// variables de repositorio
 		File m2Home;
@@ -151,21 +187,6 @@ public class JUnitMavenLauncherListener implements ILaunchesListener2 {
 					}
 				}
 			}
-		}
-
-		if (model.getGroupId() == null && model.getParent() != null)
-			mavenProperties.setProperty("project.groupId", model.getParent().getGroupId());
-		else
-			mavenProperties.setProperty("project.groupId", model.getGroupId());
-		mavenProperties.setProperty("project.artifactId", model.getArtifactId());
-		if (model.getVersion() == null && model.getParent() != null)
-			mavenProperties.setProperty("project.version", model.getParent().getVersion());
-		else
-			mavenProperties.setProperty("project.version", model.getVersion());
-		if (model.getName() == null) {
-			mavenProperties.setProperty("project.name", model.getArtifactId());
-		} else {
-			mavenProperties.setProperty("project.name", model.getName());
 		}
 		
 		// encontrar plugin de pruebas
