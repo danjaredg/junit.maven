@@ -178,6 +178,8 @@ public class JUnitMavenLauncherListener implements ILaunchesListener2 {
 									if (files != null && files.getChildren() != null) {
 										for (Xpp3Dom file : files.getChildren()) {
 											String filePath = mavenProperties.parse(file.getValue());
+											if (!filePath.startsWith("/") && filePath.length() > 2 && filePath.charAt(1) != ':')
+												filePath = projectPath.getCanonicalPath()+File.separator+filePath;
 											mavenProperties.putAllProperties(filePath);
 										}
 									}
@@ -222,10 +224,10 @@ public class JUnitMavenLauncherListener implements ILaunchesListener2 {
 				String sysPropFileName = mavenProperties.parse(
 						configuration.getChild("systemPropertiesFile").getValue());
 				File sysPropFile;
-				if (sysPropFileName.startsWith("/"))
-					sysPropFile = new File(sysPropFileName);
-				else
+				if (!sysPropFileName.startsWith("/") && sysPropFileName.length() > 2 && sysPropFileName.charAt(1) != ':')
 					sysPropFile = new File(projectPath, sysPropFileName);
+				else
+					sysPropFile = new File(sysPropFileName);
 				if (sysPropFile.exists()) {
 					Properties prop = new Properties();
 					try (InputStream input = new FileInputStream(sysPropFile)) {
