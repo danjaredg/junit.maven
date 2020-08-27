@@ -10,7 +10,7 @@ public class MavenProperties extends Properties {
 	public MavenProperties() {
 		putAllProperties(System.getProperties());
 	}
-	
+
 	public void putAllProperties(Properties prop) {
 		for (String key : prop.stringPropertyNames()) {
 			setProperty(key, prop.getProperty(key));
@@ -21,12 +21,12 @@ public class MavenProperties extends Properties {
 			load(fis);
 		}
 	}
-	
+
 	@Override
 	public synchronized Object put(Object key, Object value) {
 		return super.put(key, parse((String)value));
 	}
-	
+
 	public String parse(String value) {
 		StringBuffer sb = new StringBuffer();
 		Pattern p = Pattern.compile("\\$\\{[^\\}]+\\}");
@@ -36,8 +36,8 @@ public class MavenProperties extends Properties {
 			var = var.substring(2, var.length()-1);
 			String result = getProperty(var);
 			if (result == null)
-				result = "\\${"+var+"}";
-			m.appendReplacement(sb, result);
+				result = "${"+var+"}";
+			m.appendReplacement(sb, Matcher.quoteReplacement(result));
 		}
 		m.appendTail(sb);
 		return sb.toString();
