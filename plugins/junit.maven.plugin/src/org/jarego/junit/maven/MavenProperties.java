@@ -36,7 +36,7 @@ public class MavenProperties extends Properties {
 			var = var.substring(2, var.length()-1);
 			String result = getProperty(var);
 			if (result == null)
-				result = "${"+var+"}";
+				result = "unresolve:"+var;
 			m.appendReplacement(sb, Matcher.quoteReplacement(result));
 		}
 		m.appendTail(sb);
